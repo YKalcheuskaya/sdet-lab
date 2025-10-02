@@ -21,17 +21,11 @@
             <version>${testng.version}</version>
             <scope>test</scope>
         </dependency>
-            <dependency>
-                <groupId>io.rest-assured</groupId>
-                <artifactId>rest-assured</artifactId>
-                <version>5.4.0</version>
-                <scope>test</scope>
-            </dependency>
+
         <dependency>
             <groupId>io.rest-assured</groupId>
-            <artifactId>json-schema-validator</artifactId>
+            <artifactId>rest-assured</artifactId>
             <version>5.4.0</version>
-            <scope>test</scope>
         </dependency>
 
         <!-- чтобы убрать предупреждение SLF4J -->
@@ -41,6 +35,21 @@
             <version>2.0.13</version>
             <scope>test</scope>
         </dependency>
+        <!-- ExtentReports core -->
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>5.1.1</version>
+        </dependency>
+
+        <!-- Gson (используется внутри Extent, часто уже подтягивается; добавим явно для надёжности) -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.11.0</version>
+            <scope>compile</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
@@ -59,14 +68,6 @@
             <version>7.10.2</version>
             <scope>test</scope>
         </dependency>
-
-
-        <dependency>
-                <groupId>org.testng</groupId>
-                <artifactId>testng</artifactId>
-                <version>7.10.2</version>
-                <scope>test</scope>
-            </dependency>
         <!-- AssertJ -->
         <dependency>
             <groupId>org.assertj</groupId>
@@ -76,17 +77,37 @@
         </dependency>
         <!-- pom.xml -->
         <dependency>
+
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.17.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-path</artifactId>
+            <version>5.5.0</version>
+        </dependency>
+        <!-- RestAssured JSON Schema Validator -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>5.5.0</version>
+            <scope>test</scope>
+        </dependency>
+
 
         <!-- logback -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.5.6</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.4</version>
             <scope>test</scope>
         </dependency>
 
@@ -98,11 +119,12 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
 </project>

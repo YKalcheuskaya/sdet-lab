@@ -17,18 +17,22 @@ public class ProductCataloguePage extends BasePage {
     private WebElement cartIcon;
 
     private final By cardTitle = By.cssSelector("b");
-    private final By addBtn    = By.cssSelector("button.btn.w-10"); // актуальная кнопка «Add To Cart»
-    private final By toast     = By.cssSelector("#toast-container");
-    private final By spinner   = By.cssSelector(".ng-animating");
+    private final By addBtn = By.cssSelector("button.btn.w-10"); // актуальная кнопка «Add To Cart»
+    private final By toast = By.cssSelector("#toast-container");
+    private final By spinner = By.cssSelector(".ng-animating");
 
-    /** Ждём загрузку сетки товаров */
+    /**
+     * Ждём загрузку сетки товаров
+     */
     public ProductCataloguePage waitUntilLoaded() {
         wait.withTimeout(Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfAllElements(productCards));
         return this;
     }
 
-    /** Добавляем конкретный товар и ждём тост + исчезновение спиннера */
+    /**
+     * Добавляем конкретный товар и ждём тост + исчезновение спиннера
+     */
     public ProductCataloguePage addProductToCart(String productName) {
         waitUntilLoaded();
         for (WebElement card : productCards) {

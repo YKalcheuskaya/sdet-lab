@@ -1,39 +1,55 @@
-// src/test/java/api/BaseApiTest.java
 package api;
 
-import io.restassured.RestAssured;
-import io.restassured.builder.*;
-import io.restassured.filter.log.*;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
-import io.restassured.specification.*;
-
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.BeforeClass;
 
-public abstract class BaseApiTest {
-    protected static RequestSpecification reqSpec;
-    protected static ResponseSpecification resp200;
-    protected static ResponseSpecification resp404;
+import static io.restassured.RestAssured.basePath;
+import static io.restassured.RestAssured.baseURI;
+
+public class BaseApiTest {
+
+    protected ResponseSpecification resp200;
+    protected ResponseSpecification resp201;
+    protected ResponseSpecification resp401;
+    protected ResponseSpecification resp404;
+
+    // две спеки вместо одной
+    protected RequestSpecification specWithKey;
+    protected RequestSpecification specWithoutKey;
 
     @BeforeClass
-    public void baseSetup() {
-        reqSpec = new RequestSpecBuilder()
-                .setBaseUri("https://reqres.in")
-                .setBasePath("/api")
-                .addHeader("x-api-key", "reqres-free-v1") // твой ключ остаётся
+    public void setup() {
+        baseURI = "https://reqres.in";
+        basePath = "/api";
+
+        String apiKey = System.getProperty("apiKey",
+                System.getenv().getOrDefault("API_KEY", "reqres-free-v1"));
+
+        // спецификация С ключом
+        specWithKey = new RequestSpecBuilder()
+                .addHeader("x-api-key", apiKey)
                 .setContentType(ContentType.JSON)
-                .addFilter(new RequestLoggingFilter())
-                .addFilter(new ResponseLoggingFilter())
+                .log(LogDetail.ALL)
                 .build();
 
-        resp200 = new ResponseSpecBuilder()
-                .expectStatusCode(200)
+        // спецификация БЕЗ ключа
+        specWithoutKey = new RequestSpecBuilder()
+                .setContentType(ContentType.JSON)
+                .log(LogDetail.ALL)
                 .build();
 
-        resp404 = new ResponseSpecBuilder()
-                .expectStatusCode(404)
-                .build();
+        // ⚠️ не задавай requestSpecification глобально,
+        // иначе она всегда будет использовать specWithKey
+        // requestSpecification = specWithKey;
 
-        RestAssured.requestSpecification = reqSpec;
+        resp200 = new ResponseSpecBuilder().expectStatusCode(200).build();
+        resp201 = new ResponseSpecBuilder().expectStatusCode(201).build();
+        resp401 = new ResponseSpecBuilder().expectStatusCode(401).build();
+        resp404 = new ResponseSpecBuilder().expectStatusCode(404).build();
     }
 }
-

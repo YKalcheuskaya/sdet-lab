@@ -3,7 +3,10 @@ package ui.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ui.base.BaseUiTest;
-import ui.pages.*;
+import ui.pages.CartPage;
+import ui.pages.ConfirmationPage;
+import ui.pages.LoginPage;
+import ui.pages.ProductCataloguePage;
 
 public class E2ECheckoutTest extends BaseUiTest {
 

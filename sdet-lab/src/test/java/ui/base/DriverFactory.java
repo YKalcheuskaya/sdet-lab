@@ -17,8 +17,15 @@ public class DriverFactory {
             TL.get().manage().window().maximize();
         }
     }
-    public static WebDriver get() { return TL.get(); }
+
+    public static WebDriver get() {
+        return TL.get();
+    }
+
     public static void quit() {
-        if (TL.get() != null) { TL.get().quit(); TL.remove(); }
+        if (TL.get() != null) {
+            TL.get().quit();
+            TL.remove();
+        }
     }
 }
